@@ -1,0 +1,3 @@
+../Core/Src/Source_CMIS/TransformFunctions/arm_bitreversal.c:46:24:arm_bitreversal_f32	3
+../Core/Src/Source_CMIS/TransformFunctions/arm_bitreversal.c:121:24:arm_bitreversal_q31	3
+../Core/Src/Source_CMIS/TransformFunctions/arm_bitreversal.c:196:24:arm_bitreversal_q15	3

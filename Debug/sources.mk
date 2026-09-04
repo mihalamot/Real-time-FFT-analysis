@@ -22,6 +22,12 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Core/Src/Source_CMIS/BasicMathFunctions \
+Core/Src/Source_CMIS/CommonTables \
+Core/Src/Source_CMIS/ComplexMathFunctions \
+Core/Src/Source_CMIS/FastMathFunctions \
+Core/Src/Source_CMIS/StatisticsFunctions \
+Core/Src/Source_CMIS/TransformFunctions \
 Core/Src \
 Core/Startup \
 Drivers/BSP/STM32F4xx-Nucleo \

@@ -1,0 +1,3 @@
+../Core/Src/Source_CMIS/TransformFunctions/arm_cfft_q15.c:674:24:arm_cfft_q15	35
+../Core/Src/Source_CMIS/TransformFunctions/arm_cfft_q15.c:735:24:arm_cfft_radix4by2_q15	3
+../Core/Src/Source_CMIS/TransformFunctions/arm_cfft_q15.c:834:24:arm_cfft_radix4by2_inverse_q15	3

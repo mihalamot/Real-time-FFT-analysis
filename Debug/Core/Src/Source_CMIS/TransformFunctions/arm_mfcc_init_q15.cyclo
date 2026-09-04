@@ -1,0 +1,9 @@
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:106:30:arm_mfcc_init_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:223:1:arm_mfcc_init_32_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:252:1:arm_mfcc_init_64_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:281:1:arm_mfcc_init_128_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:310:1:arm_mfcc_init_256_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:339:1:arm_mfcc_init_512_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:368:1:arm_mfcc_init_1024_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:397:1:arm_mfcc_init_2048_q15	1
+../Core/Src/Source_CMIS/TransformFunctions/arm_mfcc_init_q15.c:426:1:arm_mfcc_init_4096_q15	1

@@ -16,6 +16,12 @@ RM := rm -rf
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Drivers/BSP/STM32F4xx-Nucleo/subdir.mk
 -include Core/Startup/subdir.mk
+-include Core/Src/Source_CMIS/TransformFunctions/subdir.mk
+-include Core/Src/Source_CMIS/StatisticsFunctions/subdir.mk
+-include Core/Src/Source_CMIS/FastMathFunctions/subdir.mk
+-include Core/Src/Source_CMIS/ComplexMathFunctions/subdir.mk
+-include Core/Src/Source_CMIS/CommonTables/subdir.mk
+-include Core/Src/Source_CMIS/BasicMathFunctions/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 

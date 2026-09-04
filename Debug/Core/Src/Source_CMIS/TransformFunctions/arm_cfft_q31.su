@@ -1,0 +1,3 @@
+../Core/Src/Source_CMIS/TransformFunctions/arm_cfft_q31.c:707:24:arm_cfft_q31	32	static
+../Core/Src/Source_CMIS/TransformFunctions/arm_cfft_q31.c:766:24:arm_cfft_radix4by2_q31	232	static
+../Core/Src/Source_CMIS/TransformFunctions/arm_cfft_q31.c:827:24:arm_cfft_radix4by2_inverse_q31	232	static

@@ -25,6 +25,8 @@
 #include "mpu.h"
 #include <stdio.h>
 #include <string.h>
+
+#define FFT_SIZE 256U
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,22 +55,8 @@ UART_HandleTypeDef huart2;
 osThreadId_t readingTaskHandle;
 const osThreadAttr_t readingTask_attributes = {
   .name = "readingTask",
-  .stack_size = 512 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
-};
-/* Definitions for fftTask */
-osThreadId_t fftTaskHandle;
-const osThreadAttr_t fftTask_attributes = {
-  .name = "fftTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
-/* Definitions for transmitTask */
-osThreadId_t transmitTaskHandle;
-const osThreadAttr_t transmitTask_attributes = {
-  .name = "transmitTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for dataReadySMPHR */
 osSemaphoreId_t dataReadySMPHRHandle;
@@ -77,8 +65,6 @@ const osSemaphoreAttr_t dataReadySMPHR_attributes = {
 };
 /* USER CODE BEGIN PV */
 MPU_t mpu_struct;
-
-volatile uint32_t int_counter = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -86,9 +72,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART2_UART_Init(void);
-void StartDefaultTask(void *argument);
-void StartTask02(void *argument);
-void StartTask03(void *argument);
+void StartReadingTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -145,10 +129,11 @@ int main(void)
 
   /* Create the semaphores(s) */
   /* creation of dataReadySMPHR */
-  dataReadySMPHRHandle = osSemaphoreNew(1, 1, &dataReadySMPHR_attributes);
+  dataReadySMPHRHandle = osSemaphoreNew(1, 0, &dataReadySMPHR_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
+
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -161,13 +146,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of readingTask */
-  readingTaskHandle = osThreadNew(StartDefaultTask, NULL, &readingTask_attributes);
-
-  /* creation of fftTask */
-  fftTaskHandle = osThreadNew(StartTask02, NULL, &fftTask_attributes);
-
-  /* creation of transmitTask */
-  transmitTaskHandle = osThreadNew(StartTask03, NULL, &transmitTask_attributes);
+  readingTaskHandle = osThreadNew(StartReadingTask, NULL, &readingTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -338,7 +317,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : PA0 */
   GPIO_InitStruct.Pin = GPIO_PIN_0;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
@@ -362,76 +341,31 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartReadingTask */
 /**
   * @brief  Function implementing the readingTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartReadingTask */
+void StartReadingTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  char msg[32];
-  mpu_enable_hardware_interrupts(&hi2c1);
 
+  char msg[16];
+  mpu_enable_hardware_interrupts(&hi2c1);
   /* Infinite loop */
   for(;;)
   {
 	osSemaphoreAcquire(dataReadySMPHRHandle, osWaitForever); 		//acquire -> wait for release
 
-	uint8_t debug;
 	HAL_StatusTypeDef status = mpu_read_accel(&hi2c1, &mpu_struct);
-	if (status == HAL_OK) debug = 0;
-	else if (status == HAL_BUSY) debug = 1;
-	else if (status == HAL_ERROR) debug = 2;
-	else if (status == HAL_TIMEOUT) debug = 3;
-
-	if (debug == 0) {
-		sprintf(msg, "%.3f, %.3f, %.3f\n", mpu_struct.Ax, mpu_struct.Ay, mpu_struct.Az);
-	} else {
-		sprintf(msg, "CODE: %d\n", debug);
+	if (status == HAL_OK) {
+		sprintf(msg, "%.5f\r\n", mpu_struct.Az);
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
 	}
-
-	HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), 100);
   }
   /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_StartTask02 */
-/**
-* @brief Function implementing the fftTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartTask02 */
-void StartTask02(void *argument)
-{
-  /* USER CODE BEGIN StartTask02 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1000);
-  }
-  /* USER CODE END StartTask02 */
-}
-
-/* USER CODE BEGIN Header_StartTask03 */
-/**
-* @brief Function implementing the transmitTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartTask03 */
-void StartTask03(void *argument)
-{
-  /* USER CODE BEGIN StartTask03 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1000);
-  }
-  /* USER CODE END StartTask03 */
 }
 
 /**

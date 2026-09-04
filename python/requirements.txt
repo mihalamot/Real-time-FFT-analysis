@@ -1,0 +1,7 @@
+PyQt6>=6.6
+pyserial>=3.5
+
+# Planned / future additions
+pyqtgraph>=0.13   # live-updating plot for graphing gx/gy/gz
+# numpy is a pyqtgraph dependency, installs automatically, listed here for clarity
+numpy>=1.26
