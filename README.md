@@ -20,4 +20,4 @@ Streams sensor data over UART, python script performs FFT and displays magnitude
 - NumPy, PyQt6, pyqtgraph, pyserial 
 
 ## Showcase video
-[![Showcase video](thumbnail.jpg)](https://www.youtube.com/watch?v=qGpIhjg3fVQ)   
+[![Showcase video](thumbnail.png)](https://www.youtube.com/watch?v=qGpIhjg3fVQ)   
